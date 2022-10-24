@@ -7,5 +7,6 @@ public class Main {
         System.out.println("iroda");
         System.out.println("Abdulatif");
         System.out.println("Bekzod");
+        System.out.println("IRODA");
     }
 }
