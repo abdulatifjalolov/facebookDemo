@@ -6,5 +6,6 @@ public class Main {
         System.out.println( " Hello");
         System.out.println("iroda");
         System.out.println("Abdulatif");
+        System.out.println("Bekzod");
     }
 }
