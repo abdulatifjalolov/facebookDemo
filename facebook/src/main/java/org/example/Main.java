@@ -9,5 +9,6 @@ public class Main {
         System.out.println("Bekzod");
         System.out.println("IRODA");
         System.out.println("edited by abdulatif");
+        System.out.println("jgfjhclihkvkjv");
     }
 }
