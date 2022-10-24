@@ -10,5 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class Chat extends Base{
+    private int user1Id;
+    private int user2Id;
 
 }

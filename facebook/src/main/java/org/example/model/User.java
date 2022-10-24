@@ -19,6 +19,4 @@ public class User extends Base{
     private int year;
     private String gander;
     //public char U+2665;
-    private int chatId;
-    private int chatGroupId;
 }
