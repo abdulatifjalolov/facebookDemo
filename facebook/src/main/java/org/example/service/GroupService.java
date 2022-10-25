@@ -1,39 +1,75 @@
 package org.example.service;
 
 import org.example.model.Group;
-
-import java.io.*;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class GroupService {
-    public List<Group> groups=new ArrayList<>();
+public class GroupService implements BaseService {
+    static Map<Group,List<Integer>> groups=new HashMap<>();
+    public boolean createGroup(String name,int adminId,List<Integer> membersIdList){
+        for (Group c : groups.keySet()) {
+            if (c!=null){
+                if (!c.getName().equals(name)){
+                    Group group=new Group();
+                    group.setName(name);
+                    group.setAdminId(adminId);
+                    groups.put(group,membersIdList);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-//    public boolean createGroup(String name,int adminId){
-////        File file=new File("C:\\Users\\abdulatif\\forJAVA\\facebook\\"+adminId);
-//
-//        Group group=new Group();
-//        group.setName(name);
-//        group.setAdminId(adminId);
-//        groups.add(group);
-//
-//        File file=new File("C:\\Users\\abdulatif\\forJAVA\\facebook\\groups\\"+group.getId()+".txt");
-//        try {
-//            file.createNewFile();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        String currentGroup=group.toString()+"\n";
-//        byte [] bytes=currentGroup.getBytes();
-//
-//        FileOutputStream fileOutputStream= null;
-//        try {
-//            fileOutputStream = new FileOutputStream(file,true);
-//            fileOutputStream.write(bytes);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return true;
-//    }
+    public boolean addMember(Group group,int memberId,List<Integer> membersIdList){
+        for (Group group1 : groups.keySet()) {
+            if (group1!=null){
+                if (group1.getName().equals(group.getName())) {
+                    membersIdList.add(memberId);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public boolean deleteMember(Group group,int memberId,List<Integer> membersIdList){
+        for (Group group1 : groups.keySet()) {
+            if (group1!=null){
+                if (group1.getName().equals(group.getName())) {
+                    membersIdList.remove(memberId);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Object getById(int id) {
+        for (Group group : groups.keySet()) {
+            if (group!=null){
+                if (group.getId()==id) {
+                    return group;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean delete(int id) {
+        for (Group group : groups.keySet()) {
+            if (group!=null){
+                if (group.getId()==id) {
+                    groups.remove(group);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+
 }

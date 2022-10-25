@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class Comments extends Base{
+public class Message extends Base{
     private int userId;
-    private int postId;
-    private String description;
+    private String text;
+    private int groupId;
 }
