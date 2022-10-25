@@ -34,14 +34,6 @@ public class MessageService implements BaseService {
 
     @Override
     public boolean delete(int id) {
-        for (Message message : messages) {
-            if (message!=null){
-                if (message.getId()==id) {
-                    messages.remove(message);
-                    return true;
-                }
-            }
-        }
         return false;
     }
 }

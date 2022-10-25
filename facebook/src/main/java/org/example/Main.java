@@ -1,17 +1,20 @@
 package org.example;
 
+import org.example.dto.UserDto;
 import org.example.model.User;
+import org.example.service.FileUtils;
 import org.example.service.UserService;
 
 import java.io.*;
 import java.util.Scanner;
 
 public class Main {
+    static String headUrl="C:\\Users\\abdulatif\\forJAVA\\facebook\\allUsers";
     static UserService userService = new UserService();
     static Scanner scannerStr = new Scanner(System.in);
     static Scanner scannerInt = new Scanner(System.in);
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
         int var1 = 10;
         while (var1 != 0) {
             System.out.println("1.LOG IN 2.REGISTRATION 0.EXIT");
@@ -24,7 +27,7 @@ public class Main {
                     System.out.println("PASSWORD: ");
                     String password = scannerStr.nextLine();
 
-                    User currentUser = userService.logIn(password, phoneNumber);
+                    User currentUser =userService.logIn(password,phoneNumber,headUrl);
                     if (currentUser != null) {
                         int var3 = 10;
                         while (var3 != 0) {
@@ -49,44 +52,15 @@ public class Main {
 
                 }
                 case 2 -> {
-                    System.out.println("FIRST NAME: ");
-                    String firstName = scannerStr.nextLine();
-
-                    System.out.println("LAST NAME: ");
-                    String lastName = scannerStr.nextLine();
-
-                    System.out.println("PHONE_NUMBER:");
-                    String phoneNumber = scannerStr.nextLine();
-
-                    System.out.println("PASSWORD: ");
-                    String password = scannerStr.nextLine();
-
-                    System.out.println("DATE_OF_BIRTH: ");
-                    int date = scannerInt.nextInt();
-
-                    System.out.println("YEAR_OF_BIRTH: ");
-                    int year = scannerInt.nextInt();
-
-                    System.out.println("MONTH_OF_BIRTH:");
-                    String month = scannerStr.nextLine();
-
-                    System.out.println("GANDER: 1.MALE 2.FEMALE ");
-                    String gander = null;
-                    var1 = scannerInt.nextInt();
-                    switch (var1) {
-                        case 1 -> {
-                            gander = "male";
-                        }
-                        case 2 -> {
-                            gander = "female";
-                        }
+                    User user= new User();
+                    User currentUser=UserDto.registration(new Scanner(System.in),new Scanner(System.in),user);
+                    if (!userService.isHasUser(currentUser)){
+                        System.out.println("THIS NUMBER ALREADY REGISTERED");
+                        break;
                     }
-                    boolean created = userService.createUser(firstName, lastName, phoneNumber, password, month, date, year, gander);
-                    try {
-                        userService.addUserInFiles(phoneNumber,created);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    FileUtils.createFileForUser(currentUser,headUrl);
+                    FileUtils.createChildFiles(headUrl,user.getPhoneNumber());
+                    userService.addUsersInfoInGson(currentUser,headUrl);
                 }
                 case 0 -> {
                 }

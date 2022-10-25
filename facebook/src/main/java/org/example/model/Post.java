@@ -2,9 +2,6 @@ package org.example.model;
 
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,6 +9,6 @@ import java.util.List;
 public class Post extends Base{
     private int userId;
     private String postName;
-    private String desctription;
+    private String description;
 
 }
