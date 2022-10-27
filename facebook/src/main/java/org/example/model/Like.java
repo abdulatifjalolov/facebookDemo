@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class Like extends Base{
-    private int userId;
-    private int postId;
-
+    private String userNumber;
+    private String postName;
 }

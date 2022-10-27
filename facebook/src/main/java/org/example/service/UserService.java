@@ -7,7 +7,7 @@ import org.example.model.User;
 import java.io.*;
 import java.util.*;
 
-public class UserService implements BaseService {
+public class UserService{
     public boolean isHasUser(User user) {
         for (String s : usersList()) {
             if (s.equals(user.getPhoneNumber())) {
@@ -140,17 +140,5 @@ public class UserService implements BaseService {
             birthdays.add(NDMY);
         }
         return birthdays;
-    }
-
-
-
-    @Override
-    public Object getById(int id) {
-        return null;
-    }
-
-    @Override
-    public boolean delete(int id) {
-        return false;
     }
 }

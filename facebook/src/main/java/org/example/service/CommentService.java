@@ -9,15 +9,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class CommentService implements BaseService{
-    static ArrayList<Comments> comments =new ArrayList<>();
-    @Override
-    public Object getById(int id) {
-        return null;
-    }
+public class CommentService{
 
-    @Override
-    public boolean delete(int id) {
-        return false;
-    }
 }

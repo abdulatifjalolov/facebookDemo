@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 @Data
-@ToString(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class User extends Base{
@@ -18,4 +17,8 @@ public class User extends Base{
     private int year;
     private String gander;
 
+    @Override
+    public String toString() {
+        return firstName+" "+lastName+":\nPHONE NUMBER: "+phoneNumber+"\nPASSWORD: "+password+"\nBIRTHDAY: "+month+":"+birthday+":"+year+"\nGANDER: "+gander+"\n";
+    }
 }
