@@ -15,7 +15,7 @@ public class Main {
     static UserService userService = new UserService();
     static ChatService chatService = new ChatService();
     static GroupService groupService = new GroupService();
-    static PostService postService=new PostService();
+    static PostService postService = new PostService();
     static Scanner scannerStr = new Scanner(System.in);
     static Scanner scannerInt = new Scanner(System.in);
 
@@ -68,38 +68,50 @@ public class Main {
     }
 
     private static void forMyAccount(User currentUser) throws IOException {
-        int var=10;
-        while (var!=0) {
+        int var = 10;
+        while (var != 0) {
             System.out.println("1.POSTS 2.EDIT_PROFILE 0.BACK");
-            var=scannerInt.nextInt();
-            switch (var){
-                case 1->{
+            var = scannerInt.nextInt();
+            switch (var) {
+                case 1 -> {
                     forPosts(currentUser);
                 }
-                case 2->{
-                    System.out.println("edit profile");
+                case 2 -> {
+                    forEditProfile(currentUser, headUrl);
                 }
-                case 0->{}
+                case 0 -> {
+                }
             }
         }
     }
 
+    private static void forEditProfile(User currentUser, String headUrl) throws IOException {
+        User user = new User();
+        User editUser = UserDto.registration(new Scanner(System.in), new Scanner(System.in), user);
+        userService.addUsersInfoInGson(editUser, headUrl);
+        for (User friend : userService.getAllFriends(headUrl, currentUser)) {
+            userService.editUserInOtherUsersFile(editUser, headUrl,friend.getPhoneNumber());
+        }
+        System.out.println("SUCCESSFULLY EDITED");
+    }
+
     private static void forPosts(User currentUser) throws IOException {
-        int var=10;
-        while (var!=0){
+        int var = 10;
+        while (var != 0) {
             System.out.println("1.CREATE_NEW_POST 2.MY_POSTS 0.BACK");
-            var=scannerInt.nextInt();
-            switch (var){
-                case 1->{
+            var = scannerInt.nextInt();
+            switch (var) {
+                case 1 -> {
                     Post newPost = postService.createNewPost(currentUser);
-                    postService.writePostInFile(currentUser,headUrl,newPost);
+                    postService.writePostInFile(currentUser, headUrl, newPost);
                 }
-                case 2->{
+                case 2 -> {
                     for (Post post : postService.getAllPosts(headUrl, currentUser.getPhoneNumber())) {
                         System.out.println(post);
                     }
                 }
-                case 0->{}
+                case 0 -> {
+                }
             }
         }
     }
@@ -146,8 +158,8 @@ public class Main {
                             case 2 -> {
                                 forCreateGroup(headUrl, currentUser);
                             }
-                            case 3->{
-                                forAddMember(headUrl,currentUser);
+                            case 3 -> {
+                                forAddMember(headUrl, currentUser);
                             }
                             case 0 -> {
                             }
@@ -328,15 +340,15 @@ public class Main {
                         }
                     }
                 }
-                case 5->{
+                case 5 -> {
                     for (User friend : userService.getAllFriends(headUrl, currentUser)) {
                         System.out.println(friend);
                     }
 
-                    while (true){
+                    while (true) {
                         System.out.println("ENTER PHONE NUMBER: (0 => BACK)");
-                        String phoneNumber=scannerStr.nextLine();
-                        if (phoneNumber.equals("0")){
+                        String phoneNumber = scannerStr.nextLine();
+                        if (phoneNumber.equals("0")) {
                             break;
                         }
 

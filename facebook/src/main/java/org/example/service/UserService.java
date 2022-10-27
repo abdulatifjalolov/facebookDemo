@@ -41,6 +41,16 @@ public class UserService{
             fileOutputStream.close();
         }
     }
+    public void editUserInOtherUsersFile(User user,String headUrl,String friendNumber) throws IOException {
+        if (user != null) {
+            FileOutputStream fileOutputStream = new FileOutputStream(headUrl + "\\" + friendNumber + "\\friends\\" + user.getPhoneNumber() + ".txt");
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String curr = gson.toJson(user);
+            byte[] bytes = curr.getBytes();
+            fileOutputStream.write(bytes);
+            fileOutputStream.close();
+        }
+    }
 
     public String[] usersList() {
         String headUrl = "C:\\Users\\abdulatif\\forJAVA\\facebook\\allUsers";
