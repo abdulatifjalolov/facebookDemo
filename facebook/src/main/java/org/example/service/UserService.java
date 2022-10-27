@@ -5,45 +5,35 @@ import com.google.gson.GsonBuilder;
 import org.example.model.User;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class UserService implements BaseService {
-    static List<User> users = new ArrayList<>();
-
-    public String[] usersList() {
-        List<String> usersList = new ArrayList<>();
-        String headUrl = "C:\\Users\\abdulatif\\forJAVA\\facebook\\allUsers";
-        File file = new File(headUrl);
-        return file.list();
-    }
-
     public boolean isHasUser(User user) {
         for (String s : usersList()) {
-            if (s.equals(user.getPhoneNumber())){
+            if (s.equals(user.getPhoneNumber())) {
                 return false;
             }
         }
         return true;
     }
 
-    public User logIn(String password, String phoneNumber, String headUrl) throws FileNotFoundException {
-        String childUrl=headUrl+"//"+phoneNumber+"//"+phoneNumber+".txt";
-        User user = FileUtils.getObjectByName(childUrl,phoneNumber);
+    public User logIn(String headUrl) throws IOException {
+        System.out.println("PHONE_NUMBER: ");
+        String phoneNumber = new Scanner(System.in).nextLine();
+
+        System.out.println("PASSWORD: ");
+        String password = new Scanner(System.in).nextLine();
+
+        User user = FileUtils.getObjectByName(headUrl, phoneNumber);
         if (user.getPassword().equals(password)) {
             return user;
         }
         return null;
     }
 
-    public User getUsersByPhoneNumber(String phoneNumber,String headUrl) throws FileNotFoundException {
-        return FileUtils.getObjectByName(phoneNumber, headUrl);
-    }
-
     public void addUsersInfoInGson(User user, String headUrl) throws IOException {
         if (user != null) {
-            FileOutputStream fileOutputStream = new FileOutputStream(headUrl+ "\\"+ user.getPhoneNumber() + "\\" + user.getPhoneNumber() + ".txt");
+            FileOutputStream fileOutputStream = new FileOutputStream(headUrl + "\\" + user.getPhoneNumber() + "\\" + user.getPhoneNumber() + ".txt");
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String curr = gson.toJson(user);
             byte[] bytes = curr.getBytes();
@@ -52,16 +42,110 @@ public class UserService implements BaseService {
         }
     }
 
+    public String[] usersList() {
+        String headUrl = "C:\\Users\\abdulatif\\forJAVA\\facebook\\allUsers";
+        File file = new File(headUrl);
+        return file.list();
+    }
+
+    public List<User> getAllUsers(String headUrl) throws IOException {
+        List<User> usersList = new ArrayList<>();
+        for (String currentUserName : usersList()) {
+            usersList.add(FileUtils.getObjectByName(headUrl, currentUserName));
+        }
+        return usersList;
+    }
+
+    public boolean isFriend(String headUrl,User currentUser,String friendNumber) throws IOException {
+        for (User friend : getAllFriends(headUrl, currentUser)) {
+            if (friendNumber.equals(friend.getPhoneNumber())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addFriend(String headUrl, User currentUser, String friendNumber) throws IOException {
+        if (isFriend(headUrl,currentUser,friendNumber)){
+            System.out.println("THIS USER ALREADY YOUR FRIEND");
+            return;
+        }
+        String friendsAddress = headUrl + "\\" + currentUser.getPhoneNumber() + "\\friends\\" + friendNumber + ".txt";
+        File file = FileUtils.createFileForFriend(friendsAddress);
+
+        User friend = FileUtils.getObjectByName(headUrl, friendNumber);
+
+        FileUtils.writeFriendToFriendsList(friend, file);
+
+        String userAddress = headUrl + "\\" + friendNumber + "\\friends\\" + currentUser.getPhoneNumber() + ".txt";
+        file = FileUtils.createFileForFriend(userAddress);
+
+        User user = FileUtils.getObjectByName(headUrl, currentUser.getPhoneNumber());
+
+        FileUtils.writeFriendToFriendsList(user, file);
+        System.out.println("SUCCESSFULLY ADDED");
+    }
+
+    private File createRequestFile(String headUrl,String friendNumber,User currentUser) throws IOException {
+        String requestAddress = headUrl + "\\" + friendNumber + "\\requests\\" + currentUser.getPhoneNumber() + ".txt";
+        File file = new File(requestAddress);
+        file.createNewFile();
+        return file;
+    }
+    public void addFriendInRequests(String headUrl, User currentUser, String friendNumber) throws IOException {
+        if (isFriend(headUrl,currentUser,friendNumber)){
+            System.out.println("THIS USER ALREADY YOUR FRIEND");
+            return;
+        }
+        File file=createRequestFile(headUrl,friendNumber,currentUser);
+        User requestedUser = FileUtils.getObjectByName(headUrl, currentUser.getPhoneNumber());
+
+        FileOutputStream fileOutputStream= new FileOutputStream(file);
+        Gson gson=new GsonBuilder().setPrettyPrinting().create();
+        String current=gson.toJson(requestedUser);
+        byte [] bytes=current.getBytes();
+        fileOutputStream.write(bytes);
+        fileOutputStream.close();
+        System.out.println("REQUEST SENT");
+    }
+    public List<User> getAllRequests(String headUrl,User currentUser) throws IOException {
+        List<User> users1=new ArrayList<>();
+        File file= new File(headUrl+"\\"+currentUser.getPhoneNumber()+"\\requests");
+        for (File current : file.listFiles()) {
+            FileReader fileReader=new FileReader(current);
+            Gson gson=new GsonBuilder().setPrettyPrinting().create();
+            users1.add(gson.fromJson(fileReader,User.class));
+            fileReader.close();
+        }
+        return users1;
+    }
+
+
+
+    public List<User> getAllFriends(String headUrl, User user) throws IOException {
+        List<User> friends = new ArrayList<>();
+        File file = new File(headUrl + "\\" + user.getPhoneNumber() + "\\friends");
+        for (File file1 : file.listFiles()) {
+            FileReader fileReader = new FileReader(file1);
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            friends.add(gson.fromJson(fileReader, User.class));
+            fileReader.close();
+        }
+        return friends;
+    }
+    public List<String> getAllBirthdays(String headUrl,User currentUser) throws IOException {
+        List<String> birthdays=new ArrayList<>();
+        for (User user : getAllFriends(headUrl, currentUser)) {
+            String NDMY=user.getFirstName()+" "+user.getLastName()+" : "+user.getMonth()+"-"+user.getBirthday()+"-"+user.getYear();
+            birthdays.add(NDMY);
+        }
+        return birthdays;
+    }
+
+
 
     @Override
     public Object getById(int id) {
-        for (User user : users) {
-            if (user != null) {
-                if (user.getId() == id) {
-                    return user;
-                }
-            }
-        }
         return null;
     }
 

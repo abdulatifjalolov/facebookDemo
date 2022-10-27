@@ -5,9 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 @Data
+@ToString(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(callSuper = true)
 public class User extends Base{
     private String firstName;
     private String lastName;
@@ -17,4 +17,5 @@ public class User extends Base{
     private int birthday;
     private int year;
     private String gander;
+
 }
