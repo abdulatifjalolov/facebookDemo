@@ -90,7 +90,7 @@ public class Main {
         User editUser = UserDto.registration(new Scanner(System.in), new Scanner(System.in), user);
         userService.addUsersInfoInGson(editUser, headUrl);
         for (User friend : userService.getAllFriends(headUrl, currentUser)) {
-            userService.editUserInOtherUsersFile(editUser, headUrl,friend.getPhoneNumber());
+            userService.editUserInOtherUsersFile(editUser, headUrl, friend.getPhoneNumber());
         }
         System.out.println("SUCCESSFULLY EDITED");
     }
@@ -292,7 +292,7 @@ public class Main {
     private static void forFriends(User currentUser) throws IOException {
         int var2 = 10;
         while (var2 != 0) {
-            System.out.println("1.FRIENDS_LIST 2.FRIEND_REQUESTS 3.BIRTHDAYS 4.ADD_NEW_FRIEND 5.FRIENDS_POSTS 0.BACK");
+            System.out.println("1.FRIENDS_LIST 2.FRIEND_REQUESTS 3.BIRTHDAYS 4.ADD_NEW_FRIEND 5.FRIENDS_POSTS 6.REMOVE_FRIEND 0.BACK");
             var2 = scannerInt.nextInt();
             switch (var2) {
                 case 1 -> {
@@ -356,6 +356,16 @@ public class Main {
                             System.out.println(post);
                         }
                     }
+                }
+                case 6 -> {
+                    for (User friend : userService.getAllFriends(headUrl, currentUser)) {
+                        System.out.println(friend);
+                    }
+
+                    System.out.println("ENTER PHONE NUMBER: ");
+                    String phoneNumber = scannerStr.nextLine();
+
+                    userService.removeFriend(headUrl, currentUser, phoneNumber);
                 }
                 case 0 -> {
                 }

@@ -129,6 +129,21 @@ public class UserService{
         }
         return users1;
     }
+    public void removeFriend(String headUrl,User user,String removedPhoneNumber){
+        File file=new File(headUrl+"\\"+user.getPhoneNumber()+"\\friends\\"+removedPhoneNumber+".txt");
+        file.delete();
+
+        file=new File(headUrl+"\\"+user.getPhoneNumber()+"\\personal_chats\\"+removedPhoneNumber+".txt");
+        file.delete();
+
+        file=new File(headUrl+"\\"+removedPhoneNumber+"\\personal_chats\\"+user.getPhoneNumber()+".txt");
+        file.delete();
+
+        file=new File(headUrl+"\\"+removedPhoneNumber+"\\friends\\"+user.getPhoneNumber()+".txt");
+        file.delete();
+
+        System.out.println("SUCCESSFULLY DELETED");
+    }
 
 
 
