@@ -9,8 +9,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class Comments extends Base{
-    private int userId;
-    private int postId;
+public class Comments extends Base {
+    private String userPhoneNumber;
+    private String postName;
     private String description;
 }

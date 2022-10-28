@@ -15,10 +15,10 @@ public class FileUtils {
     }
 
     public static User getObjectByName(String headUrl, String name) throws IOException {
-        String userAddress="\\"+name+"\\"+name+".txt";
-        File file = new File(headUrl+userAddress);
+        String userAddress = "\\" + name + "\\" + name + ".txt";
+        File file = new File(headUrl + userAddress);
         FileReader fileReader = new FileReader(file);
-        Gson gson=new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         User user = gson.fromJson(fileReader, User.class);
         fileReader.close();
         return user;
@@ -41,8 +41,8 @@ public class FileUtils {
         file.mkdir();
     }
 
-    public static File createFileForFriend(String friendUrlAddress){
-        File file=new File(friendUrlAddress);
+    public static File createFileForFriend(String friendUrlAddress) {
+        File file = new File(friendUrlAddress);
         try {
             file.createNewFile();
         } catch (IOException e) {
@@ -50,11 +50,12 @@ public class FileUtils {
         }
         return file;
     }
-    public static void writeFriendToFriendsList(User friend,File file){
-        Gson gson=new GsonBuilder().setPrettyPrinting().create();
-        String currFriend=gson.toJson(friend);
-        byte [] bytes=currFriend.getBytes();
-        FileOutputStream fileOutputStream= null;
+
+    public static void writeFriendToFriendsList(User friend, File file) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String currFriend = gson.toJson(friend);
+        byte[] bytes = currFriend.getBytes();
+        FileOutputStream fileOutputStream = null;
         try {
             fileOutputStream = new FileOutputStream(file);
         } catch (FileNotFoundException e) {

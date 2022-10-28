@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class Like extends Base{
+public class Like extends Base {
     private String userNumber;
     private String postName;
 }

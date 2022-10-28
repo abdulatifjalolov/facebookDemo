@@ -2,10 +2,11 @@ package org.example.service;
 
 import org.example.model.Group;
 import org.example.model.User;
+
 import java.io.*;
 import java.util.*;
 
-public class GroupService{
+public class GroupService {
 
     public List<File> allGroups(String headUrl, User currentUser) {
         List<File> files = new ArrayList<>();
@@ -47,13 +48,13 @@ public class GroupService{
     }
 
     public File getGroupFile(String headUrl, String groupName, User currentUser) {
-        File file=new File(headUrl+"\\"+currentUser.getPhoneNumber()+"\\groups\\"+groupName+".txt");
+        File file = new File(headUrl + "\\" + currentUser.getPhoneNumber() + "\\groups\\" + groupName + ".txt");
         return file;
     }
 
-    public void writeMessageToFiles(File file,String message) throws IOException {
-        FileOutputStream fileOutputStream=new FileOutputStream(file,true);
-        byte [] bytes=message.getBytes();
+    public void writeMessageToFiles(File file, String message) throws IOException {
+        FileOutputStream fileOutputStream = new FileOutputStream(file, true);
+        byte[] bytes = message.getBytes();
         fileOutputStream.write(bytes);
         fileOutputStream.close();
     }
@@ -61,12 +62,12 @@ public class GroupService{
 
     public String getGroupChat(String headUrl, String groupName, User currentUser) throws IOException {
         File group = getGroupFile(headUrl, groupName, currentUser);
-        FileReader fileReader=new FileReader(group);
+        FileReader fileReader = new FileReader(group);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         String message = "";
         String s = bufferedReader.readLine();
         while (s != null) {
-            message += s+"\n";
+            message += s + "\n";
             s = bufferedReader.readLine();
         }
         bufferedReader.close();

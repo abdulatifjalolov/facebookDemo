@@ -11,12 +11,12 @@ public abstract class Base {
     protected int id;
     private static final int idGeneration = 0;
 
-    public Base(){
+    public Base() {
         File file = new File("C:\\Users\\abdulatif\\forJAVA\\facebook\\idGeneration\\idGeneration.txt");
-        FileReader fileReader =null;
+        FileReader fileReader = null;
         int idGeneration1 = 0;
         try {
-            fileReader=new FileReader(file);
+            fileReader = new FileReader(file);
 
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -34,7 +34,7 @@ public abstract class Base {
 
         idGeneration1++;
 
-        FileWriter fileWriter= null;
+        FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(file);
         } catch (IOException e) {

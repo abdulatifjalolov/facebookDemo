@@ -5,13 +5,13 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Post extends Base{
+public class Post extends Base {
     private int userId;
     private String postName;
     private String description;
 
     @Override
     public String toString() {
-        return "Post Theme: '"+postName + "'\ndescription: '"+description+"'\n";
+        return "<post heme> '" + postName + "'\ndescription: '" + description + "'\n";
     }
 }

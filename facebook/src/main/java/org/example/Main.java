@@ -135,12 +135,9 @@ public class Main {
                             chatService.createChatFile(currentUser, phoneNumber, headUrl);
 
                             String s = chatService.getPersonalChat(headUrl, currentUser, phoneNumber);
+                            System.out.println("(0 => BACK)");
                             if (s != null) {
-                                System.out.println(s);
-                            }
-                            System.out.println("ENTER MESSAGE: (0 => BACK)");
-                            if (s == null) {
-                                System.out.println("NO MESSAGE HERE YET");
+                                System.out.print(s);
                             }
                             message(currentUser, phoneNumber);
                         }
@@ -255,7 +252,7 @@ public class Main {
                 var = Integer.parseInt(message);
             }
             if (var != 0 && !message.equals("")) {
-                message = currentUser.getFirstName() + " " + currentUser.getLastName() + " : " + message + " [" + chatService.getCurrentTime() + "]\n";
+                message = "<" + currentUser.getFirstName() + ">" + " " + message + " <" + chatService.getCurrentTime() + ">\n";
                 for (User user : userService.getAllFriends(headUrl, currentUser)) {
                     File file1 = new File(headUrl + "\\" + user.getPhoneNumber() + "\\groups");
                     for (File file : file1.listFiles()) {
@@ -272,19 +269,20 @@ public class Main {
 
 
     private static void message(User currentUser, String phoneNumber) throws IOException {
-        int var = 10;
-        while (var != 0) {
+        while (true) {
+            System.out.print("<" + currentUser.getFirstName() + "> ");
             String message = scannerStr.nextLine();
             if (message.equals("0")) {
-                var = Integer.parseInt(message);
+                break;
             }
-            if (var != 0 && !message.equals("")) {
+            if (!message.equals("")) {
+                message = "<" + currentUser.getFirstName() + ">" + "  " + message + " <" + chatService.getCurrentTime() + ">";
+
                 File personalCHat1 = chatService.getPersonalCHats(headUrl, currentUser, phoneNumber).get(0);
-                message = currentUser.getFirstName() + " " + currentUser.getLastName() + " : " + message + " [" + chatService.getCurrentTime() + "]";
-                chatService.writeMessagetoPersonalChat(personalCHat1, message);
+                chatService.writeMessagePersonalChatForCurrentUser(personalCHat1, message);
 
                 File personalCHat2 = chatService.getPersonalCHats(headUrl, currentUser, phoneNumber).get(1);
-                chatService.writeMessagetoPersonalChat(personalCHat2, message);
+                chatService.writeMessagetoPersonalChatForFriend(personalCHat2, message);
             }
         }
     }

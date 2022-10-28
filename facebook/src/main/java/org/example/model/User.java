@@ -4,10 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends Base{
+public class User extends Base {
     private String firstName;
     private String lastName;
     private String phoneNumber;
@@ -19,6 +20,6 @@ public class User extends Base{
 
     @Override
     public String toString() {
-        return firstName+" "+lastName+":\nPHONE NUMBER: "+phoneNumber+"\nPASSWORD: "+password+"\nBIRTHDAY: "+month+":"+birthday+":"+year+"\nGANDER: "+gander+"\n";
+        return firstName + " " + lastName + ":\nPHONE NUMBER: " + phoneNumber + "\nPASSWORD: " + password + "\nBIRTHDAY: " + month + ":" + birthday + ":" + year + "\nGANDER: " + gander + "\n";
     }
 }

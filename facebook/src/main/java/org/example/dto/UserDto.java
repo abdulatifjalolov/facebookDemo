@@ -6,7 +6,7 @@ import org.example.service.UserService;
 import java.util.Scanner;
 
 public class UserDto {
-     public static User registration(Scanner scanner,Scanner scannerInt,User user){
+    public static User registration(Scanner scanner, Scanner scannerInt, User user) {
         System.out.println("FIRST NAME: ");
         String firstName = scanner.nextLine();
         user.setFirstName(firstName);
@@ -48,6 +48,6 @@ public class UserDto {
         }
         user.setGander(gander);
 
-         return user;
+        return user;
     }
 }

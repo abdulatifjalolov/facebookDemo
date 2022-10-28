@@ -7,7 +7,7 @@ import org.example.model.User;
 import java.io.*;
 import java.util.*;
 
-public class UserService{
+public class UserService {
     public boolean isHasUser(User user) {
         for (String s : usersList()) {
             if (s.equals(user.getPhoneNumber())) {
@@ -41,7 +41,8 @@ public class UserService{
             fileOutputStream.close();
         }
     }
-    public void editUserInOtherUsersFile(User user,String headUrl,String friendNumber) throws IOException {
+
+    public void editUserInOtherUsersFile(User user, String headUrl, String friendNumber) throws IOException {
         if (user != null) {
             FileOutputStream fileOutputStream = new FileOutputStream(headUrl + "\\" + friendNumber + "\\friends\\" + user.getPhoneNumber() + ".txt");
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -66,9 +67,9 @@ public class UserService{
         return usersList;
     }
 
-    public boolean isFriend(String headUrl,User currentUser,String friendNumber) throws IOException {
+    public boolean isFriend(String headUrl, User currentUser, String friendNumber) throws IOException {
         for (User friend : getAllFriends(headUrl, currentUser)) {
-            if (friendNumber.equals(friend.getPhoneNumber())){
+            if (friendNumber.equals(friend.getPhoneNumber())) {
                 return true;
             }
         }
@@ -76,7 +77,7 @@ public class UserService{
     }
 
     public void addFriend(String headUrl, User currentUser, String friendNumber) throws IOException {
-        if (isFriend(headUrl,currentUser,friendNumber)){
+        if (isFriend(headUrl, currentUser, friendNumber)) {
             System.out.println("THIS USER ALREADY YOUR FRIEND");
             return;
         }
@@ -96,55 +97,57 @@ public class UserService{
         System.out.println("SUCCESSFULLY ADDED");
     }
 
-    private File createRequestFile(String headUrl,String friendNumber,User currentUser) throws IOException {
+    private File createRequestFile(String headUrl, String friendNumber, User currentUser) throws IOException {
         String requestAddress = headUrl + "\\" + friendNumber + "\\requests\\" + currentUser.getPhoneNumber() + ".txt";
         File file = new File(requestAddress);
         file.createNewFile();
         return file;
     }
+
     public void addFriendInRequests(String headUrl, User currentUser, String friendNumber) throws IOException {
-        if (isFriend(headUrl,currentUser,friendNumber)){
+        if (isFriend(headUrl, currentUser, friendNumber)) {
             System.out.println("THIS USER ALREADY YOUR FRIEND");
             return;
         }
-        File file=createRequestFile(headUrl,friendNumber,currentUser);
+        File file = createRequestFile(headUrl, friendNumber, currentUser);
         User requestedUser = FileUtils.getObjectByName(headUrl, currentUser.getPhoneNumber());
 
-        FileOutputStream fileOutputStream= new FileOutputStream(file);
-        Gson gson=new GsonBuilder().setPrettyPrinting().create();
-        String current=gson.toJson(requestedUser);
-        byte [] bytes=current.getBytes();
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String current = gson.toJson(requestedUser);
+        byte[] bytes = current.getBytes();
         fileOutputStream.write(bytes);
         fileOutputStream.close();
         System.out.println("REQUEST SENT");
     }
-    public List<User> getAllRequests(String headUrl,User currentUser) throws IOException {
-        List<User> users1=new ArrayList<>();
-        File file= new File(headUrl+"\\"+currentUser.getPhoneNumber()+"\\requests");
+
+    public List<User> getAllRequests(String headUrl, User currentUser) throws IOException {
+        List<User> users1 = new ArrayList<>();
+        File file = new File(headUrl + "\\" + currentUser.getPhoneNumber() + "\\requests");
         for (File current : file.listFiles()) {
-            FileReader fileReader=new FileReader(current);
-            Gson gson=new GsonBuilder().setPrettyPrinting().create();
-            users1.add(gson.fromJson(fileReader,User.class));
+            FileReader fileReader = new FileReader(current);
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            users1.add(gson.fromJson(fileReader, User.class));
             fileReader.close();
         }
         return users1;
     }
-    public void removeFriend(String headUrl,User user,String removedPhoneNumber){
-        File file=new File(headUrl+"\\"+user.getPhoneNumber()+"\\friends\\"+removedPhoneNumber+".txt");
+
+    public void removeFriend(String headUrl, User user, String removedPhoneNumber) {
+        File file = new File(headUrl + "\\" + user.getPhoneNumber() + "\\friends\\" + removedPhoneNumber + ".txt");
         file.delete();
 
-        file=new File(headUrl+"\\"+user.getPhoneNumber()+"\\personal_chats\\"+removedPhoneNumber+".txt");
+        file = new File(headUrl + "\\" + user.getPhoneNumber() + "\\personal_chats\\" + removedPhoneNumber + ".txt");
         file.delete();
 
-        file=new File(headUrl+"\\"+removedPhoneNumber+"\\personal_chats\\"+user.getPhoneNumber()+".txt");
+        file = new File(headUrl + "\\" + removedPhoneNumber + "\\personal_chats\\" + user.getPhoneNumber() + ".txt");
         file.delete();
 
-        file=new File(headUrl+"\\"+removedPhoneNumber+"\\friends\\"+user.getPhoneNumber()+".txt");
+        file = new File(headUrl + "\\" + removedPhoneNumber + "\\friends\\" + user.getPhoneNumber() + ".txt");
         file.delete();
 
         System.out.println("SUCCESSFULLY DELETED");
     }
-
 
 
     public List<User> getAllFriends(String headUrl, User user) throws IOException {
@@ -158,10 +161,11 @@ public class UserService{
         }
         return friends;
     }
-    public List<String> getAllBirthdays(String headUrl,User currentUser) throws IOException {
-        List<String> birthdays=new ArrayList<>();
+
+    public List<String> getAllBirthdays(String headUrl, User currentUser) throws IOException {
+        List<String> birthdays = new ArrayList<>();
         for (User user : getAllFriends(headUrl, currentUser)) {
-            String NDMY=user.getFirstName()+" "+user.getLastName()+" : "+user.getMonth()+"-"+user.getBirthday()+"-"+user.getYear();
+            String NDMY = user.getFirstName() + " " + user.getLastName() + " : " + user.getMonth() + "-" + user.getBirthday() + "-" + user.getYear();
             birthdays.add(NDMY);
         }
         return birthdays;
